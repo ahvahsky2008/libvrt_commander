@@ -6,13 +6,7 @@
     
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <title>Virtman</title>
-    <style>
-    body {
-      background-color: #282828;
-      color: white;
-    }
-    </style>
+    <title>Virtman commander</title>
   </head>
   
   <body>
@@ -21,35 +15,26 @@
   <ul class="navbar-nav mr-auto">
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          VMs
+          Виртуальные машины
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/manager/listing">Listing</a>
-          <a class="dropdown-item" href="/manager/add">Create VM</a>
+          <a class="dropdown-item" href="/manager/listing">Список</a>
+          <a class="dropdown-item" href="/manager/add">Создать ВМ</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/manager/Disks">Disks</a>
-          <a class="dropdown-item" href="/manager/ISO">ISOs</a>
+          <a class="dropdown-item" href="/manager/Disks">Диски</a>
+          <a class="dropdown-item" href="/manager/ISO">ISO-образы</a>
         </div>
       </li>
     <li class="nav-item">
-        <a class="nav-link" href="/manager/containers">Containers</a>
+        <a class="nav-link" href="/manager/containers">Контейнеры</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/manager/viewStats">Stats</a>
+        <a class="nav-link" href="/manager/viewStats">Статистика</a>
     </li>
   </ul>
   
   <ul class="nav navbar-nav navbar-right">
-    {% if user.is_authenticated %}
-    <li class="navbar-item">
-      <a class="nav-link" href="/manager/profile">{{user.get_username}}</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/accounts/logout">Logout</a>
-    </li>
-    {% else %}
-        <a class="nav-link" href="/accounts/login">Login</a>
-    {% endif %}
+    
   </ul>
   </nav>
 	<div id="content" name="content" class="main">
