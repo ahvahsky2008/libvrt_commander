@@ -6,10 +6,14 @@ import time
 from xml.etree import ElementTree as ET
 
 def create_vm(machine_details):
+    '''Создаёт ВМ с заданными параметрами из XML'''
+
     conn = libvirt.open(None)
     conn.defineXML(machine_details)
 
 def remove_disk(Disk):
+    '''Открепляет диск'''
+
     os.remove(Disk.path + Disk.name)
 
 def start_vm(machine_details):
@@ -55,6 +59,8 @@ def del_vm(vm):
         pass
 
 def save_state(vm,filename):
+    '''Сохраняет состояние ВМ в файл'''
+
     conn = libvirt.open("qemu:///system")
 
     dom = conn.lookupByName(vm)
@@ -79,6 +85,8 @@ def save_state(vm,filename):
     return 'Всё гут'
 
 def restore_state(filename):
+    '''Восстанавливает состояние ВМ из файла'''
+    
     conn = libvirt.open("qemu:///system")
 
     id = conn.restore(filename)
