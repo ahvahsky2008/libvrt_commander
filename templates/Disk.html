@@ -1,0 +1,38 @@
+{% extends "base.html"%}
+{% block content %}
+
+<a class="btn btn-primary" href="/manager/createDisk">Create Disk</a>
+
+{% if Disk_list %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Path</th>
+      <th scope="col">Type</th>
+      <th scope="col" style="text-align: center"><button type="submit" class="btn btn-primary" form="delete_form">Delete</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for Disk in Disk_list %}
+        <tr>
+        <th scope="row">{{ forloop.counter}}</th>
+        <td>{{Disk.name}}</td>
+        <td>{{Disk.path}}</td>
+        <td>{{Disk.type}}</td>
+        <td style="text-align: center"><input class="form-check-input" form="delete_form" type="checkbox" value="{{ Disk.id }}" id="{{ Disk.id }}" name="Disks"></td>
+        </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+There are no ISOs available
+{% endif %}
+
+<form method="post" id="delete_form">
+{% csrf_token %}
+</form>
+
+{%endblock content %}

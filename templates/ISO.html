@@ -1,0 +1,35 @@
+{% extends "base.html"%}
+{% block content %}
+
+<a class="btn btn-primary" href="/manager/uploadISO">Choose ISO</a>
+
+{% if ISO_list %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col" style="text-align: center"><button type="submit" class="btn btn-primary" form="delete_form">Delete</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for iso in ISO_list %}
+        <tr>
+        <th scope="row">{{ forloop.counter}}</th>
+        <td>{{iso.name}}</td>
+
+        <td style="text-align: center"><input class="form-check-input" form="delete_form" type="checkbox" value="{{ iso.id }}" id="{{ iso.id }}" name="ISOs"></td>
+        </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+There are no ISOs available
+{% endif %}
+
+<form method="post" id="delete_form">
+{% csrf_token %}
+</form>
+
+{%endblock content %}

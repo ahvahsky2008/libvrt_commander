@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Virtman</title>
+    <style>
+    body {
+      background-color: #282828;
+      color: white;
+    }
+    </style>
+  </head>
+  
+  <body>
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <a class="navbar-brand" href="/manager/home">Virtman</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          VMs
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/manager/listing">Listing</a>
+          <a class="dropdown-item" href="/manager/add">Create VM</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/manager/Disks">Disks</a>
+          <a class="dropdown-item" href="/manager/ISO">ISOs</a>
+        </div>
+      </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/manager/containers">Containers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/manager/viewStats">Stats</a>
+    </li>
+  </ul>
+  
+  <ul class="nav navbar-nav navbar-right">
+    {% if user.is_authenticated %}
+    <li class="navbar-item">
+      <a class="nav-link" href="/manager/profile">{{user.get_username}}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/accounts/logout">Logout</a>
+    </li>
+    {% else %}
+        <a class="nav-link" href="/accounts/login">Login</a>
+    {% endif %}
+  </ul>
+  </nav>
+	<div id="content" name="content" class="main">
+		<div class="row justify-content-center">
+			<div class="col-11">
+        <hr class="mt-0 mb-4">
+				{% block content %}
+				{% endblock %}
+			</div>
+		</div>
+	</div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</html>

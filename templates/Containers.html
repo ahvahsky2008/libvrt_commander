@@ -1,0 +1,48 @@
+{% extends "base.html"%}
+{% block content %}
+
+<a class="btn btn-primary" href="/manager/addContainer">Add Container</a>
+
+{% if container_list %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">CPUs</th>
+      <th scope="col">RAM</th>
+      <th scope="col">App</th>
+      <th scope="col">Actions</th>
+      <th scope="col" style="text-align: center"><button type="submit" class="btn btn-primary" form="delete_form">Delete</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for container in container_list %}
+        <tr>
+        <th scope="row">{{ forloop.counter}}</th>
+        <td>{{container.name}}</td>
+        <td>{{container.cpus}}</td>
+        <td>{{container.ram}}</td>
+        <td>{{container.app}}</td>
+        <td>
+        {% if container.state == 'ON' %}
+        <a class="btn btn-primary" href="/manager/{{ container.id }}/stopContainer">Stop</a>
+        {% else %}
+        <a class="btn btn-primary" href="/manager/{{ container.id }}/startContainer">Start</a> 
+        {% endif %}
+        </td>
+        <td style="text-align: center"><input class="form-check-input" form="delete_form" type="checkbox" value="{{ container.id }}" id="{{ container.id }}" name="Containers"></td>
+        </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+There are no containers available
+{% endif %}
+
+<form method="post" id="delete_form">
+{% csrf_token %}
+</form>
+
+{%endblock content %}

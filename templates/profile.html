@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.profile.advanced_mode %}
+Advanced Mode
+{% else %}
+Simple Mode
+{% endif %}
+<br>
+<a class="btn btn-primary" href="/manager/toggleAdvancedMode">Toggle user Mode</a>
+
+{% endblock content %}

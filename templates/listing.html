@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="dropdown show">
+
+<a class="btn btn-primary" href="/manager/add">Add VM</a>
+
+{% if VM_list %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">CPU</th>
+      <th scope="col">RAM</th>
+      <th scope"col">Disk</th>
+      <th scope="col">Hypervisor</th>
+      <th scope="col">Actions</th>
+      <th scope="col">State</th>
+      <th scope="col" style="text-align: center"><button type="submit" class="btn btn-primary" form="delete_form">Delete</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vm in VM_list %}
+        <tr>
+        <th scope="row">{{ forloop.counter}}</th>
+        <td>{{vm.name}}</td>
+        <td>{{vm.cpus}} Cores</td>
+        <td>{{vm.ram}} MiB</td>
+        <td>{{vm.storage_disk}}</td>
+        <td>{{vm.hypervisor}}</td>
+        <td>
+        {% if vm.state == 'ON' %}
+        <button type="button" class="btn btn-primary" disabled>Start</button>
+        <button type="button" class="btn btn-primary" disabled>Edit</button>
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/manager/{{ vm.id }}/shutdownVM">Shutdown</a>
+          <a class="dropdown-item" href="/manager/{{ vm.id }}/restartVM">Restart</a>
+          <a class="dropdown-item" href="/manager/{{ vm.id }}/stopVM">Force Off</a>
+        </div>
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/vnc?host={{ip}}&port=6080&autoconnect=true">VNC</a>
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/viewStats">Stats</a>
+        
+        {% else %}
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/startVM">Start</a>
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/edit">Edit</a>
+        <button type="button" class="btn btn-primary dropdown-toggle" disabled>Stop </button>
+        <button type="button" class="btn btn-primary" disabled>Stats</button>
+        <button type="button" class="btn btn-primary" disabled>VNC</button>
+        {% endif %}
+        {% if vm.state == "ON" %}
+        <td>Running</td>
+        <td style="text-align: center"><input class="form-check-input" type="checkbox" disabled></td>
+        {% else %}
+        <td>Stopped</td>
+        <td style="text-align: center"><input class="form-check-input" form="delete_form" type="checkbox" value="{{ vm.id }}" id="{{ vm.id }}" name="VMs"></td>
+        {% endif %}
+        </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+There are no VMs available
+{% endif %}
+<br>
+<br>
+{% if customVM_list and user.profile.advanced_mode %}
+Advanced/Custom VMs:
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+      <th scope="col">State</th>
+      <th scope="col" style="text-align: center"><button type="submit" class="btn btn-primary" form="delete_form">Delete</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vm in customVM_list %}
+        <tr>
+        <th scope="row">{{ forloop.counter}}</th>
+        <td>{{vm.name}}</td>
+        <td>
+        {% if vm.state == 'ON' %}
+        <button type="button" class="btn btn-primary" disabled>Start</button>
+        <button type="button" class="btn btn-primary" disabled>Edit</button>
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop</button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="/manager/{{ vm.id }}/shutdowncustomVM">Shutdown</a>
+          <a class="dropdown-item" href="/manager/{{ vm.id }}/restartcustomVM">Restart</a>
+          <a class="dropdown-item" href="/manager/{{ vm.id }}/stopcustomVM">Force Off</a>
+        </div>
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/customvnc?host={{ip}}&port=6080&autoconnect=true">VNC</a>
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/viewcustomStats">Stats</a>
+        
+        {% else %}
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/startCustomVM">Start</a>
+        <a class="btn btn-primary" href="/manager/{{ vm.id }}/customedit">Edit</a>
+        <button type="button" class="btn btn-primary dropdown-toggle" disabled>Stop </button>
+        <button type="button" class="btn btn-primary" disabled>Stats</button>
+        <button type="button" class="btn btn-primary" disabled>VNC</button>
+        {% endif %}
+        {% if vm.state == "ON" %}
+        <td>Running</td>
+        <td style="text-align: center"><input class="form-check-input" type="checkbox" disabled></td>
+        {% else %}
+        <td>Stopped</td>
+        <td style="text-align: center"><input class="form-check-input" form="delete_form" type="checkbox" value="{{ vm.id }}" id="{{ vm.id }}" name="customVMs"></td>
+        {% endif %}
+        
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+<form method="post" id="delete_form">
+{% csrf_token %}
+</form>
+{% endblock content %}
