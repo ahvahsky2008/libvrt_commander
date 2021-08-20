@@ -6,32 +6,24 @@
 
 <a class="btn btn-primary" href="/manager/add">Add VM</a>
 
-{% if VM_list %}
+{% if vms %}
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">id</th>
       <th scope="col">Name</th>
-      <th scope="col">CPU</th>
-      <th scope="col">RAM</th>
-      <th scope"col">Disk</th>
-      <th scope="col">Hypervisor</th>
       <th scope="col">Actions</th>
-      <th scope="col">State</th>
+      <th scope="col">Status</th>
       <th scope="col" style="text-align: center"><button type="submit" class="btn btn-primary" form="delete_form">Delete</button></th>
     </tr>
   </thead>
   <tbody>
-    {% for vm in VM_list %}
+    {% for vm in vms %}
         <tr>
-        <th scope="row">{{ forloop.counter}}</th>
+        <th scope="row">{{ vm.id}}</th>
         <td>{{vm.name}}</td>
-        <td>{{vm.cpus}} Cores</td>
-        <td>{{vm.ram}} MiB</td>
-        <td>{{vm.storage_disk}}</td>
-        <td>{{vm.hypervisor}}</td>
         <td>
-        {% if vm.state == 'ON' %}
+        {% if vm.status == 1 %}
         <button type="button" class="btn btn-primary" disabled>Start</button>
         <button type="button" class="btn btn-primary" disabled>Edit</button>
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop</button>
@@ -50,7 +42,7 @@
         <button type="button" class="btn btn-primary" disabled>Stats</button>
         <button type="button" class="btn btn-primary" disabled>VNC</button>
         {% endif %}
-        {% if vm.state == "ON" %}
+        {% if vm.status == 1 %}
         <td>Running</td>
         <td style="text-align: center"><input class="form-check-input" type="checkbox" disabled></td>
         {% else %}
@@ -85,7 +77,7 @@ Advanced/Custom VMs:
         <th scope="row">{{ forloop.counter}}</th>
         <td>{{vm.name}}</td>
         <td>
-        {% if vm.state == 'ON' %}
+        {% if vm.status == 1 %}
         <button type="button" class="btn btn-primary" disabled>Start</button>
         <button type="button" class="btn btn-primary" disabled>Edit</button>
         <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Stop</button>
@@ -104,7 +96,7 @@ Advanced/Custom VMs:
         <button type="button" class="btn btn-primary" disabled>Stats</button>
         <button type="button" class="btn btn-primary" disabled>VNC</button>
         {% endif %}
-        {% if vm.state == "ON" %}
+        {% if vm.status == 1 %}
         <td>Running</td>
         <td style="text-align: center"><input class="form-check-input" type="checkbox" disabled></td>
         {% else %}
@@ -118,6 +110,5 @@ Advanced/Custom VMs:
 {% endif %}
 
 <form method="post" id="delete_form">
-{% csrf_token %}
 </form>
 {% endblock content %}

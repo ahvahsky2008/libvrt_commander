@@ -4,12 +4,74 @@ import shutil
 import sys
 import time
 from xml.etree import ElementTree as ET
+from models import *
 
+
+def save_state_vm(id, to):
+    '''Сохранение статуса виртуальной машины'''
+    conn = libvirt.open('qemu:///system')
+    machine = conn.lookupByID(id)
+    machine.save(to)
+    conn.close()
+
+
+def resume_vm(id):
+    '''Резьюм виртуальной машины'''
+    
+    conn = libvirt.open('qemu:///system')
+    machine = conn.lookupByID(id)
+    machine.resume()
+    conn.close()
+
+def suspend_vm(id):
+    '''Установка виртуальной машины в режим Пауза'''
+    
+    conn = libvirt.open('qemu:///system')
+    machine = conn.lookupByID(id)
+    machine.suspend()    
+    conn.close()
+
+
+def stop_vm(id,force=False):
+    '''Остановка виртуальной машины по его ид'''
+    
+    conn = libvirt.open('qemu:///system')
+    machine = conn.lookupByID(id)
+    
+    if force==False:
+        machine.shutdown()
+    else:
+        machine.destroy()
+    conn.close()
+
+def start_vm(id):
+    '''Запуск виртуальной машины по его ИД'''
+
+    conn = libvirt.open('qemu:///system')
+    machine = conn.lookupByID(id)
+    machine.create()
+    conn.close()
+
+
+def get_vms():
+    '''Получаем список виртуальных машин с 3 параметрами:  имя,ИД, статус'''
+
+    vms = []
+    conn = libvirt.open("qemu:///system")
+    domains = conn.listAllDomains(0)
+    
+    for vm in conn.listAllDomains():
+        vms.append(VirtualMachine(vm.name(), vm.ID(), vm.isActive()))
+    
+    conn.close()
+    return vms
+    
 def create_vm(machine_details):
     '''Создаёт ВМ с заданными параметрами из XML'''
 
     conn = libvirt.open(None)
     conn.defineXML(machine_details)
+    conn.close()
 
 def remove_disk(Disk):
     '''Открепляет диск'''
@@ -23,6 +85,7 @@ def start_vm(machine_details):
     conn = libvirt.open('qemu:///system')
     machine = conn.lookupByName(machine_details.name)
     machine.create()
+    conn.close()
 
 def stop_vm(machine, action):
     '''Останавливает виртуальную машину'''
@@ -86,7 +149,7 @@ def save_state(vm,filename):
 
 def restore_state(filename):
     '''Восстанавливает состояние ВМ из файла'''
-    
+
     conn = libvirt.open("qemu:///system")
 
     id = conn.restore(filename)
